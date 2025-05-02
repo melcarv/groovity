@@ -169,10 +169,8 @@ http://localhost:4200
 
 ## 💡 Possíveis Melhorias Futuras
 
-- Armazenamento local seguro do token e renovação automática
 - Testes unitários com Jest
-- Filtro e ordenação de álbuns ou faixas
-- Cache de resultados no localStorage
+-
 
 ---
 

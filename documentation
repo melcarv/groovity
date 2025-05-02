@@ -1,0 +1,76 @@
+## ✅ Objetivo Geral
+Desenvolver uma aplicação Angular 16 que consome dados da API pública do Spotify, utilizando boas práticas modernas de frontend.
+
+---
+
+## 🧱 Etapas já realizadas e o motivo de cada escolha:
+
+---
+
+### 1. **Criação de um backend em Vercel**
+#### 🔐 O que foi feito:
+Foi criada uma API simples (`/api/token`) que gera um `access_token` do Spotify usando o fluxo **Client Credentials** com `client_id` e `client_secret`.
+
+#### 🧠 Por que isso?
+- **Segurança:** nunca expor o `client_secret` no frontend, o que seria uma falha grave.
+- **Escalabilidade:** esse backend pode ser usado por outras aplicações no futuro.
+- **Praticidade:** o Vercel permite fazer isso gratuitamente e com deploy automático via GitHub. Bem como tornar automática a atualização do token.
+
+---
+
+### 2. **Criação do `AuthService` no Angular**
+
+Serviço Angular responsável por buscar, armazenar e fornecer o token de acesso do Spotify.
+
+#### 🔐 O que foi feito:
+Foi criado um serviço que:
+- Faz requisição ao backend `/api/token`
+- Armazena o token em memória
+- Evita chamadas desnecessárias (só renova após 1h)
+- Expõe o token para o restante da aplicação
+
+#### 🧠 Por que isso?
+- **Separação de responsabilidades:** componentes e serviços não precisam saber como o token é obtido.
+- **Performance:** evita várias requisições desnecessárias ao backend.
+- **Boas práticas Angular:** uso de `Observable`, `RxJS`, `tap`, `map` e `HttpClient` corretamente.
+-
+
+---
+
+### 3. **Criação do `AuthInterceptor`**
+
+Interceptor HTTP que escuta todas as requisições feitas com HttpClient e, se a URL for da API do Spotify, anexa automaticamente o token no cabeçalho (Authorization).
+
+#### 🔄 O que foi feito:
+Interceptação de todas as requisições que vão para `https://api.spotify.com/v1` e adicionando o token automaticamente no header `Authorization`.
+
+#### 🧠 Por que isso?
+- **Centralização da lógica de autenticação:** nenhum serviço precisa lembrar de adicionar o token.
+- **Clean code:** reduz código duplicado e melhora a legibilidade.
+- **Recomendado em qualquer app real:** essa é uma abordagem padrão em aplicações Angular.
+
+---
+
+### 🧠 Resumo do fluxo até agora
+
+```
+Angular → AuthService → chama backend (/api/token) → recebe token do Spotify
+↓
+Interceptador → anexa token automaticamente a cada requisição para a API do Spotify
+↓
+Spotify API → responde com dados de artistas, álbuns, faixas
+```
+
+---
+
+### ✅ Resultado até agora
+- Fluxo seguro e limpo de autenticação com a API do Spotify
+- Segue exatamente as boas práticas que o desafio da NTT solicita:
+  - **Consumo de API externa**
+  - **Integração com autenticação**
+  - **Uso de `HttpClient`, `services`, `interceptors`, `environment.ts`**
+  - **Separação clara de responsabilidades**
+
+---
+
+Continua...
