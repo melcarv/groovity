@@ -38,106 +38,44 @@ A estrutura do projeto foi intencionalmente modularizada para refletir boas prá
 
 src/
 ├── app/
-│   ├── core/                              # Código essencial/global
+│   ├── core/                  # Serviços e interceptadores globais
 │   │   ├── services/
-│   │   │   ├── auth.service.ts
-│   │   │   └── spotify.service.ts
-│   │   ├── interceptors/
-│   │   │   └── auth.interceptor.ts
-│   │   └── core.module.ts
-│
-│   ├── shared/                            # Componentes e utilitários reutilizáveis
+│   │   └── interceptors/
+│   ├── shared/                # Componentes e pipes reutilizáveis
 │   │   ├── components/
 │   │   │   ├── artist-card/
-│   │   │   │   ├── artist-card.component.ts
-│   │   │   │   ├── artist-card.component.html
-│   │   │   │   └── artist-card.component.scss
 │   │   │   ├── album-card/
-│   │   │   │   ├── album-card.component.ts
-│   │   │   │   ├── album-card.component.html
-│   │   │   │   └── album-card.component.scss
 │   │   │   ├── pagination/
-│   │   │   │   ├── pagination.component.ts
-│   │   │   │   ├── pagination.component.html
-│   │   │   │   └── pagination.component.scss
 │   │   │   ├── loading-spinner/
-│   │   │   │   ├── loading-spinner.component.ts
-│   │   │   │   ├── loading-spinner.component.html
-│   │   │   │   └── loading-spinner.component.scss
 │   │   │   ├── error-message/
-│   │   │   │   ├── error-message.component.ts
-│   │   │   │   ├── error-message.component.html
-│   │   │   │   └── error-message.component.scss
 │   │   │   ├── search-bar/
-│   │   │   │   ├── search-bar.component.ts
-│   │   │   │   ├── search-bar.component.html
-│   │   │   │   └── search-bar.component.scss
 │   │   │   ├── header/
-│   │   │   │   ├── header.component.ts
-│   │   │   │   ├── header.component.html
-│   │   │   │   └── header.component.scss
 │   │   │   └── footer/
-│   │   │       ├── footer.component.ts
-│   │   │       ├── footer.component.html
-│   │   │       └── footer.component.scss
 │   │   ├── pipes/
-│   │   │   └── truncate.pipe.ts
 │   │   └── shared.module.ts
-│
-│   ├── features/                          # Funcionalidades principais com rotas
+│   ├── features/              # Funcionalidades principais
 │   │   ├── search/
-│   │   │   ├── search.component.ts
-│   │   │   ├── search.component.html
-│   │   │   ├── search.component.scss
-│   │   │   └── search-routing.module.ts
 │   │   ├── artist-detail/
-│   │   │   ├── artist-detail.component.ts
-│   │   │   ├── artist-detail.component.html
-│   │   │   ├── artist-detail.component.scss
-│   │   │   └── artist-detail-routing.module.ts
 │   │   ├── album-detail/
-│   │   │   ├── album-detail.component.ts
-│   │   │   ├── album-detail.component.html
-│   │   │   ├── album-detail.component.scss
-│   │   │   └── album-detail-routing.module.ts
 │   │   ├── not-found/
-│   │   │   ├── not-found.component.ts
-│   │   │   ├── not-found.component.html
-│   │   │   └── not-found.component.scss
 │   │   └── features-routing.module.ts
-│
-│   ├── app.component.ts
-│   ├── app.component.html
-│   ├── app.component.scss
 │   ├── app-routing.module.ts
+│   ├── app.component.ts
 │   └── app.module.ts
 │
-├── assets/                                # Imagens e arquivos estáticos
-│   └── logo.svg
+├── assets/                    # Imagens e arquivos estáticos
 │
-├── environments/
-│   ├── environment.ts
-│   └── environment.prod.ts
+├── environments/              # Variáveis de ambiente
 │
-├── styles/                                # SCSS global e modular
+├── styles/                    # Estilização global em SCSS
 │   ├── base/
-│   │   ├── _variables.scss
-│   │   ├── _reset.scss
-│   │   └── _typography.scss
 │   ├── layout/
-│   │   ├── _grid.scss
-│   │   └── _spacing.scss
 │   ├── components/
-│   │   ├── _artist-card.scss
-│   │   └── _album-card.scss
 │   └── main.scss
 │
 ├── index.html
 ├── main.ts
-├── styles.scss → importa styles/main.scss
-├── angular.json
-├── tsconfig.json
-└── README.md
+├── styles.scss                # Importa styles/main.scss
 
 ---
 
