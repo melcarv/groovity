@@ -15,6 +15,12 @@ Groovity é uma aplicação frontend desenvolvida com Angular v16 que consome a 
 
 ---
 
+## Possiveis melhorias
+
+- Cache de token e renovação automática
+- Tela de loading entre rotas
+- Testes unitários com Jest
+
 ## Tecnologias Utilizadas
 
 - [Angular 16](https://angular.io/)
@@ -157,23 +163,7 @@ O layout foi construído com SCSS puro, utilizando flexbox e grid para garantir 
 
 ---
 
-## Autenticação com Spotify
-
-Este projeto utiliza o [Client Credentials Flow](https://developer.spotify.com/documentation/web-api/tutorials/client-credentials-flow) para autenticação.
-
-### Como gerar o token:
-
-1. Acesse o [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/)
-2. Crie um novo app e copie seu `Client ID` e `Client Secret`
-3. Use este comando para obter um token:
-```bash
-curl -X POST "https://accounts.spotify.com/api/token" \
-     -H "Authorization: Basic BASE64(client_id:client_secret)" \
-     -d grant_type=client_credentials
-
----
-
-⚙️ Instalação e Execução
+## ⚙️ Instalação e Execução
 
 Clone o repositório:
 
@@ -208,14 +198,16 @@ http://localhost:4200
 
 ---
 
-## Possiveis melhorias
+### Autenticação com Spotify
 
-- Cache de token e renovação automática
-- Tela de loading entre rotas
-- Testes unitários com Jest
+Este projeto utiliza o [Client Credentials Flow](https://developer.spotify.com/documentation/web-api/tutorials/client-credentials-flow) para autenticação.
 
----
+### Como gerar o token:
 
-## Licença
-
-Este projeto foi desenvolvido apenas para avaliativos.
+1. Acesse o [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/)
+2. Crie um novo app e copie seu `Client ID` e `Client Secret`
+3. Use este comando para obter um token:
+```bash
+curl -X POST "https://accounts.spotify.com/api/token" \
+     -H "Authorization: Basic BASE64(client_id:client_secret)" \
+     -d grant_type=client_credentials
