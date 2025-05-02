@@ -45,7 +45,7 @@ src/
 │   │   ├── interceptors/
 │   │   │   └── auth.interceptor.ts
 │   │   └── core.module.ts
-│   | 
+│
 │   ├── shared/                            # Componentes e utilitários reutilizáveis
 │   │   ├── components/
 │   │   │   ├── artist-card/
@@ -83,7 +83,7 @@ src/
 │   │   ├── pipes/
 │   │   │   └── truncate.pipe.ts
 │   │   └── shared.module.ts
-│   |
+│
 │   ├── features/                          # Funcionalidades principais com rotas
 │   │   ├── search/
 │   │   │   ├── search.component.ts
@@ -105,7 +105,7 @@ src/
 │   │   │   ├── not-found.component.html
 │   │   │   └── not-found.component.scss
 │   │   └── features-routing.module.ts
-│   |
+│
 │   ├── app.component.ts
 │   ├── app.component.html
 │   ├── app.component.scss
