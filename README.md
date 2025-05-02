@@ -6,7 +6,7 @@ Groovity é uma aplicação frontend desenvolvida com Angular v16 que consome a 
 
 ---
 
-## Funcionalidades
+## ✨ Funcionalidades
 
 - Busca de artistas
 - Detalhamento do artista
@@ -16,7 +16,7 @@ Groovity é uma aplicação frontend desenvolvida com Angular v16 que consome a 
 
 ---
 
-## Tecnologias Utilizadas
+## 🧰 Tecnologias Utilizadas
 
 - [Angular 16](https://angular.io/)
 - [NodeJs 18.10.0](https://nodejs.org/pt)
@@ -27,7 +27,7 @@ Groovity é uma aplicação frontend desenvolvida com Angular v16 que consome a 
 
 ---
 
-## Arquitetura do Projeto
+## 🏗️ Arquitetura do Projeto
 
 A aplicação foi estruturada com foco em separação de responsabilidades, escalabilidade e reutilização de componentes. Utiliza a arquitetura modular do Angular:
 
@@ -39,18 +39,18 @@ A aplicação foi estruturada com foco em separação de responsabilidades, esca
 
 ---
 
-## Estrutura do projeto
+## 📁 Estrutura do projeto
 
 ```txt
 src/
 ├── app/
-│   ├── core/                         # Serviços e interceptadores globais
+│   ├── core/
 │   │   ├── services/
 │   │   │   ├── auth.service.ts
 │   │   │   └── spotify.service.ts
 │   │   └── interceptors/
 │   │       └── auth.interceptor.ts
-│   ├── shared/                       # Componentes reutilizáveis e pipes
+│   ├── shared/
 │   │   ├── components/
 │   │   │   ├── artist-card/
 │   │   │   ├── album-card/
@@ -59,11 +59,11 @@ src/
 │   │   │   ├── error-message/
 │   │   │   ├── search-bar/
 │   │   │   ├── header/
-│   │   │   └── footer/
+│   │   │   └── side-menu/
 │   │   ├── pipes/
 │   │   │   └── truncate.pipe.ts
 │   │   └── shared.module.ts
-│   ├── features/                    # Páginas principais da aplicação
+│   ├── features/
 │   │   ├── search/
 │   │   ├── artist-detail/
 │   │   ├── album-detail/
@@ -73,43 +73,55 @@ src/
 │   ├── app.module.ts
 │   └── app.component.{ts,html,scss}
 │
-├── assets/                          # Arquivos estáticos
-├── environments/                    # Variáveis de ambiente
+├── assets/
+├── environments/
 │   ├── environment.ts
 │   └── environment.prod.ts
-├── styles/                          # SCSS global modular
+├── styles/
 │   ├── base/
 │   ├── layout/
 │   ├── components/
 │   └── main.scss
-├── styles.scss                      # Importa main.scss
+├── styles.scss
 ├── main.ts
 ├── index.html
 ```
 
 ---
 
-## Autenticação com o Spotify
+## 🔐 Autenticação com a API do Spotify
 
-O projeto utiliza o [Client Credentials Flow](https://developer.spotify.com/documentation/web-api/tutorials/client-credentials-flow) da Spotify API.
-
-### Obtenção do token:
-
-1. Acesse o [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/)
-2. Crie um app e copie seu `Client ID` e `Client Secret`
-3. Gere um token com:
-
-```bash
-curl -X POST "https://accounts.spotify.com/api/token" \
-     -H "Authorization: Basic BASE64(client_id:client_secret)" \
-     -d grant_type=client_credentials
-```
-
-> ⚠️ **O token pode ser inserido temporariamente em `environment.ts` para testes, mas o segredo nunca deve ser exposto no repositório.**
+Groovity utiliza o fluxo [Client Credentials Flow](https://developer.spotify.com/documentation/web-api/tutorials/client-credentials-flow) para obter um token de acesso com segurança. Para isso, um backend leve foi criado usando **Vercel** para proteger os dados sensíveis (`client_id` e `client_secret`).
 
 ---
 
-## Como Rodar o Projeto
+### ⚙️ Como configurar seu próprio backend de token (caso deseje usar/forkar este projeto)
+
+1. Acesse [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
+2. Crie um novo app e copie seu `Client ID` e `Client Secret`
+3. Faça fork ou clone do repositório [spotify-token-api] (https://github.com/melcarv/spotify-token-api)
+4. Vá até [Vercel](https://vercel.com)
+   - Crie um novo projeto importando o repositório `spotify-token-api`
+   - Durante o deploy, crie estas variáveis de ambiente:
+
+     ```
+     SPOTIFY_CLIENT_ID=seu_client_id
+     SPOTIFY_CLIENT_SECRET=seu_client_secret
+     ```
+
+5. Após o deploy, Vercel fornecerá uma URL parecida com:
+
+   ```
+   https://spotify-token-api-sua-conta.vercel.app
+   ```
+
+6. Copie essa URL e utilize no `AuthService` do projeto Angular para buscar o token de forma segura.
+
+7. Construir um "backend" foi uma forma de otimizar tempo, já que o token expira a cada 1h e precisaria ser gerado e substituido manualmente. Dessa forma, é possivel gerar e atualizar o token automaticamente.
+
+---
+
+## ▶️ Como Rodar o Projeto
 
 1. Clone o repositório:
 ```bash
@@ -122,13 +134,13 @@ cd groovity
 npm install
 ```
 
-3. Configure o token manualmente (temporário) em:
+3. Configure o endpoint do backend no arquivo de ambiente:
 ```ts
 // src/environments/environment.ts
 export const environment = {
   production: false,
   spotifyApiBaseUrl: 'https://api.spotify.com/v1',
-  accessToken: 'SEU_ACCESS_TOKEN_AQUI'
+  spotifyTokenUrl: 'https://seu-projeto.vercel.app/api/token' // Substitua pelo seu e inclua manualmente o caminho /api/token. Ao escrever essa Url no navegador, ela deve retornar o objeto com seu token. Aí sim, estará pronto para ser usado.
 };
 ```
 
@@ -144,7 +156,7 @@ http://localhost:4200
 
 ---
 
-## Componentes Extras Implementados
+## 🧩 Componentes Extras Implementados
 
 - `pagination`: componente reutilizável de paginação
 - `loading-spinner`: spinner para carregamento de dados
@@ -155,14 +167,15 @@ http://localhost:4200
 
 ---
 
-## Possíveis Melhorias Futuras
+## 💡 Possíveis Melhorias Futuras
 
 - Armazenamento local seguro do token e renovação automática
 - Testes unitários com Jest
 - Filtro e ordenação de álbuns ou faixas
+- Cache de resultados no localStorage
 
 ---
 
-## Licença
+## 📜 Licença
 
 Este projeto foi desenvolvido exclusivamente para fins avaliativos.
