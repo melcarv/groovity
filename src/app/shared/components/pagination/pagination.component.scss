@@ -1,0 +1,26 @@
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+    gap: 0.5rem;
+  
+    button {
+      background-color: transparent;
+      color: white;
+      border: 1px solid #555;
+      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-weight: bold;
+  
+      &.active {
+        background-color: #1db954;
+        color: black;
+      }
+  
+      &:hover {
+        background-color: #333;
+      }
+    }
+  }
+  

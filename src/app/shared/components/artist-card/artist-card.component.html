@@ -1,1 +1,12 @@
-<p>artist-card works!</p>
+<div class="artist-card">
+  <div class="image-container">
+    <img
+      *ngIf="artist?.images?.length"
+      [src]="artist.images[0].url"
+      [alt]="artist.name"
+    />
+  </div>
+  <h3>{{ artist.name }}</h3>
+  <a [routerLink]="['/artist', artist.id]">Ver detalhes</a>
+</div>
+  

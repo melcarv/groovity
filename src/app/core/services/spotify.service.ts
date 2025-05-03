@@ -10,11 +10,14 @@ export class SpotifyService {
   constructor(private http: HttpClient) {}
 
   searchArtists(query: string, limit = 10, offset = 0): Observable<any> {
+    const searchQuery = `artist:"${query}"`;
+    
     const params = new HttpParams()
-      .set('q', query)
+      .set('q', searchQuery)
       .set('type', 'artist')
       .set('limit', limit)
-      .set('offset', offset);
+      .set('offset', offset)
+      .set('market', 'BR');
 
     return this.http.get(`${this.baseUrl}/search`, { params });
   }
@@ -26,7 +29,8 @@ export class SpotifyService {
   getArtistAlbums(id: string, limit = 10, offset = 0): Observable<any> {
     const params = new HttpParams()
       .set('limit', limit)
-      .set('offset', offset);
+      .set('offset', offset)
+      .set('market', 'BR');
 
     return this.http.get(`${this.baseUrl}/artists/${id}/albums`, { params });
   }

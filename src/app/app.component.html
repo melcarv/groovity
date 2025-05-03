@@ -1,7 +1,7 @@
 <div class="app-container">
   <app-side-menu [open]="menuOpen" (close)="closeMenu()"></app-side-menu>
 
-  <div class="app-layout">
+  <div class="app-layout" [class.menu-open]="menuOpen">
     <app-header
       *ngIf="!isHomePage"
       [searchControl]="searchControl"

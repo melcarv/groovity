@@ -1,9 +1,11 @@
 <div class="search-bar">
+  <form (ngSubmit)="$event.preventDefault(); navigateToSearch(control.value)">
     <input
       type="text"
       [formControl]="control"
       [placeholder]="placeholder"
       class="search-input"
     />
-  </div>
+  </form>
+</div>
   

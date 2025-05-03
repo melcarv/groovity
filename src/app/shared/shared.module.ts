@@ -10,6 +10,7 @@ import { LoadingSpinnerComponent } from './components/loading-spinner/loading-sp
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { AlbumCardComponent } from './components/album-card/album-card.component';
 import { ArtistCardComponent } from './components/artist-card/artist-card.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -21,11 +22,13 @@ import { ArtistCardComponent } from './components/artist-card/artist-card.compon
     PaginationComponent,
     AlbumCardComponent,
     ArtistCardComponent
+    
   ],
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule
   ],
   exports: [
     SearchBarComponent,
