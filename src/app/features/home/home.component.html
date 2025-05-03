@@ -1,0 +1,12 @@
+<section class="home-hero">
+    <div class="hero-content">
+      <h1>Explore artistas, álbuns e faixas</h1>
+      <p>Busque por seus artistas favoritos diretamente do Spotify</p>
+      <app-search-bar [control]="searchControl" placeholder="Buscar artista..."></app-search-bar>
+    </div>
+  
+    <div class="hero-image" *ngIf="highlightArtist">
+      <img [src]="highlightArtist.images[0]?.url" [alt]="highlightArtist.name" />
+    </div>
+  </section>
+  
