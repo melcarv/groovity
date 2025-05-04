@@ -58,8 +58,7 @@ src/
 │   │   │   ├── loading-spinner/
 │   │   │   ├── error-message/
 │   │   │   ├── search-bar/
-│   │   │   ├── header/
-│   │   │   └── side-menu/
+│   │   │   └── header/
 │   │   ├── pipes/
 │   │   │   └── truncate.pipe.ts
 │   │   └── shared.module.ts
@@ -169,10 +168,8 @@ http://localhost:4200
 
 ## 💡 Possíveis Melhorias Futuras
 
-- Armazenamento local seguro do token e renovação automática
 - Testes unitários com Jest
-- Filtro e ordenação de álbuns ou faixas
-- Cache de resultados no localStorage
+-
 
 ---
 

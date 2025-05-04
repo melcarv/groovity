@@ -1,0 +1,35 @@
+.app-container {
+  height: 100vh;
+  background: var(--background);
+  color: white;
+  position: relative;
+}
+
+.app-layout {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-content {
+  flex: 1;
+  overflow-y: auto;
+  background-color: var(--background);
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--background);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
+
+    &:hover {
+      background: #444;
+    }
+  }
+}

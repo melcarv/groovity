@@ -1,0 +1,31 @@
+<section class="search-results" *ngIf="query">
+    <h2>Resultados para: <strong>{{ query }}</strong></h2>
+  
+    <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+  
+    <app-error-message *ngIf="error" [message]="error"></app-error-message>
+  
+    <div class="artist-list" *ngIf="!loading && !error && artists.length > 0">
+      <app-artist-card
+        *ngFor="let artist of artists"
+        [artist]="artist"
+      ></app-artist-card>
+    </div>
+  
+    <div class="no-results" *ngIf="!loading && !error && artists.length === 0">
+      Nenhum artista encontrado para "{{ query }}"
+    </div>
+  
+    <app-pagination
+      *ngIf="!loading && !error && artists.length > 0"
+      [offset]="offset"
+      [limit]="limit"
+      [total]="total"
+      (pageChange)="onPageChange($event)"
+    ></app-pagination>
+  </section>
+  
+  <section *ngIf="!query">
+    <p style="color: white;">Digite algo no campo de busca para começar.</p>
+  </section>
+  

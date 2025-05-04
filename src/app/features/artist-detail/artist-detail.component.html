@@ -1,0 +1,41 @@
+<app-loading-spinner *ngIf="loading"></app-loading-spinner>
+
+<app-error-message *ngIf="error" [message]="error"></app-error-message>
+
+<div class="artist-page" *ngIf="!loading && !error && artist">
+  <!-- Hero Section -->
+  <div class="hero-section" [style.background-image]="'url(' + (artist.images[0]?.url || '') + ')'">
+    <div class="hero-content">
+      <img [src]="artist.images[0]?.url" [alt]="artist.name" class="artist-image">
+      <div class="artist-info">
+        <h1>{{artist.name}}</h1>
+        <div class="artist-stats">
+          <span class="followers">{{artist.followers?.total | number}} seguidores</span>
+          <div class="genres" *ngIf="hasGenres()">
+            <span class="genre" *ngFor="let genre of artist.genres">{{genre}}</span>
+          </div>
+          <!-- Debug info -->
+          <div style="color: red" *ngIf="!hasGenres()">No genres available</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-section">
+    <!-- Albums Section -->
+    <section class="albums-section" *ngIf="albums.length">
+      <h2>Álbuns</h2>
+      <div class="albums-grid">
+        <app-album-card *ngFor="let album of albums" [album]="album"></app-album-card>
+      </div>
+
+      <app-pagination
+        [offset]="offset"
+        [limit]="limit"
+        [total]="total"
+        (pageChange)="onPageChange($event)"
+      ></app-pagination>
+    </section>
+  </div>
+</div>
+  

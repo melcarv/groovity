@@ -1,0 +1,35 @@
+.app-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 1rem 2rem;
+    background-color: var(--background) ;
+    color: white;
+    height: 95px;
+  
+    .logo {
+      font-size: 1.5rem;
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.2s ease;
+      white-space: nowrap;
+
+      img {
+        width: 40px;
+        height: 40px;
+      }
+  
+      &:hover {
+        color: var(--red-5);
+      }
+    }
+  
+    app-search-bar {
+      flex: 1;
+      max-width: 500px;
+    }
+  }
+  

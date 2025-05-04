@@ -1,0 +1,12 @@
+<div class="artist-card" (click)="navigateToArtist()">
+  <div class="image-container">
+    <img
+      *ngIf="artist?.images?.length"
+      [src]="artist.images[0].url"
+      [alt]="artist.name"
+    />
+  </div>
+  <h3>{{ artist.name }}</h3>
+  <p>Artista</p>
+</div>
+  

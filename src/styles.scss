@@ -1,1 +1,33 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --background: #18191d;
+  --input: #272a2f;
+  --text: #525963;
+  --gray-0: #1f2025;
+  --gray-5: #16171b;
+  --gray-10: #111217;
+
+  --red-0: #ff003a;
+  --red-5: #fe0000;
+
+  --green-0: #10ff6e;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: var(--background);
+}
+
+body {
+  font-family: "Montserrat", sans-serif; 
+  color: white;
+  line-height: 1.5;
+}
