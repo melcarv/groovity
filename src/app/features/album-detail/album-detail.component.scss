@@ -1,0 +1,225 @@
+.album-page {
+  min-height: 100vh;
+  background-color: #121212;
+  color: white;
+  position: relative;
+}
+
+.back-button {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  font-size: 16px;
+  padding: 8px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 20px;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+
+  i {
+    font-size: 14px;
+  }
+}
+
+.hero-section {
+  position: relative;
+  height: 400px;
+  background-size: cover;
+  background-position: center;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(18,18,18,1) 100%);
+  }
+}
+
+.hero-content {
+  position: relative;
+  padding: 40px;
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+  gap: 40px;
+  
+  .images-container {
+    display: flex;
+    gap: 24px;
+    align-items: flex-end;
+
+    .artist-image {
+      width: 232px;
+      height: 232px;
+      border-radius: 4px;
+      box-shadow: 0 4px 60px rgba(0,0,0,.5);
+    }
+
+    .album-image {
+      width: 180px;
+      height: 180px;
+      border-radius: 4px;
+      box-shadow: 0 4px 60px rgba(0,0,0,.5);
+    }
+  }
+  
+  .album-info {
+    .album-type {
+      font-size: 14px;
+      font-weight: 500;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    h1 {
+      font-size: 72px;
+      margin: 0;
+      font-weight: 700;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+      margin-bottom: 24px;
+    }
+    
+    .album-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #b3b3b3;
+      font-size: 14px;
+
+      .artist {
+        color: white;
+        font-weight: 500;
+      }
+
+      span:not(:first-child)::before {
+        content: '•';
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+.content-section {
+  padding: 32px;
+  
+  .tracks-section {
+    .tracks-header {
+      display: grid;
+      grid-template-columns: 48px 1fr 120px;
+      padding: 8px 16px;
+      color: #b3b3b3;
+      font-size: 14px;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+      margin-bottom: 16px;
+    }
+
+    .tracks-list {
+      .track-item {
+        display: grid;
+        grid-template-columns: 48px 1fr 120px;
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-size: 14px;
+
+        &:hover {
+          background: rgba(255,255,255,.1);
+        }
+
+        .track-number {
+          color: #b3b3b3;
+        }
+
+        .track-title {
+          display: flex;
+          flex-direction: column;
+
+          .name {
+            color: white;
+            margin-bottom: 4px;
+          }
+
+          .artists {
+            color: #b3b3b3;
+            font-size: 13px;
+          }
+        }
+
+        .track-duration {
+          color: #b3b3b3;
+          text-align: right;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    height: 300px;
+  }
+
+  .hero-content {
+    padding: 24px;
+    gap: 24px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    .images-container {
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+
+      .artist-image {
+        width: 160px;
+        height: 160px;
+      }
+
+      .album-image {
+        width: 120px;
+        height: 120px;
+      }
+    }
+
+    .album-info {
+      h1 {
+        font-size: 48px;
+        margin-bottom: 16px;
+      }
+
+      .album-meta {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+    }
+  }
+
+  .content-section {
+    padding: 24px;
+
+    .tracks-section {
+      .tracks-header {
+        grid-template-columns: 48px 1fr 80px;
+      }
+
+      .tracks-list .track-item {
+        grid-template-columns: 48px 1fr 80px;
+      }
+    }
+  }
+}
+  

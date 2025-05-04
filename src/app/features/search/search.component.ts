@@ -25,11 +25,12 @@ export class SearchComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       const newQuery = params['q']?.trim() || '';
-      this.offset = +params['offset'] || 0;
+      const newOffset = +params['offset'] || 0;
 
       // Só atualiza se a query for diferente ou se mudou o offset
-      if (newQuery !== this.query || this.offset !== +params['offset']) {
+      if (newQuery !== this.query || this.offset !== newOffset) {
         this.query = newQuery;
+        this.offset = newOffset;
         if (this.query) {
           this.fetchArtists();
         } else {

@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { HeaderComponent } from './components/header/header.component';
-import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { ErrorMessageComponent } from './components/error-message/error-message.component';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
@@ -16,7 +14,6 @@ import { RouterModule } from '@angular/router';
   declarations: [
     SearchBarComponent,
     HeaderComponent,
-    SideMenuComponent,
     ErrorMessageComponent,
     LoadingSpinnerComponent,
     PaginationComponent,
@@ -33,7 +30,6 @@ import { RouterModule } from '@angular/router';
   exports: [
     SearchBarComponent,
     HeaderComponent,
-    SideMenuComponent,
     ErrorMessageComponent,
     LoadingSpinnerComponent,
     PaginationComponent,

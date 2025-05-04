@@ -21,7 +21,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     console.log('SearchBar: Initializing...');
     this.subscription = this.control.valueChanges
       .pipe(
-        debounceTime(300),
+        debounceTime(500),
         distinctUntilChanged(),
         filter(query => query?.trim().length > 0)
       )

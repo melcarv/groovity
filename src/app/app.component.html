@@ -1,11 +1,8 @@
 <div class="app-container">
-  <app-side-menu [open]="menuOpen" (close)="closeMenu()"></app-side-menu>
-
-  <div class="app-layout" [class.menu-open]="menuOpen">
+  <div class="app-layout">
     <app-header
       *ngIf="!isHomePage"
       [searchControl]="searchControl"
-      (menuToggle)="toggleMenu()"
     ></app-header>
 
     <main class="app-content">

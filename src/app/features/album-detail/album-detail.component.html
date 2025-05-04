@@ -1,1 +1,50 @@
-<p>album-detail works!</p>
+<app-loading-spinner *ngIf="loading"></app-loading-spinner>
+
+<app-error-message *ngIf="error" [message]="error"></app-error-message>
+
+<div class="album-page" *ngIf="!loading && !error && album && artist">
+  <button class="back-button" (click)="goBack()">
+    <i class="fas fa-arrow-left"></i> Voltar
+  </button>
+
+  <!-- Hero Section -->
+  <div class="hero-section" [style.background-image]="'url(' + (artist.images[0]?.url || '') + ')'">
+    <div class="hero-content">
+      <div class="images-container">
+        <img [src]="album.images[0]?.url" [alt]="album.name" class="album-image">
+      </div>
+      <div class="album-info">
+        <span class="album-type">{{ album.album_type | titlecase }}</span>
+        <h1>{{ album.name }}</h1>
+        <div class="album-meta">
+          <span class="artist">{{ artist.name }}</span>
+          <span class="year">{{ album.release_date | date:'yyyy' }}</span>
+          <span class="tracks">{{ album.total_tracks }} faixas</span>
+          <span class="duration">{{ getTotalDuration() }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-section">
+    <div class="tracks-section">
+      <div class="tracks-header">
+        <div class="track-number">#</div>
+        <div class="track-title">Título</div>
+        <div class="track-duration">Duração</div>
+      </div>
+      
+      <div class="tracks-list">
+        <div class="track-item" *ngFor="let track of album.tracks?.items; let i = index">
+          <div class="track-number">{{ track.track_number }}</div>
+          <div class="track-title">
+            <span class="name">{{ track.name }}</span>
+            <span class="artists">{{ getArtists(track.artists) }}</span>
+          </div>
+          <div class="track-duration">{{ formatDuration(track.duration_ms) }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  

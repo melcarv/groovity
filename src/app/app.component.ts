@@ -8,20 +8,11 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  menuOpen = false;
   searchControl = new FormControl('');
 
   constructor(public router: Router) {}
 
   get isHomePage(): boolean {
     return this.router.url === '/' || this.router.url === '/home';
-  }
-
-  toggleMenu(): void {
-    this.menuOpen = !this.menuOpen;
-  }
-
-  closeMenu(): void {
-    this.menuOpen = false;
   }
 }

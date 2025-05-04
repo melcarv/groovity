@@ -1,7 +1,6 @@
 .artist-card {
-    background-color: #1e1e1e;
+    background-color: var(--gray-5);
     padding: 1rem;
-    border-radius: 12px;
     text-align: center;
     color: white;
     transition: all 0.3s ease;
@@ -35,22 +34,10 @@
       white-space: nowrap;
       width: 100%;
     }
-  
-    a {
-      display: inline-block;
-      margin-top: 0.5rem;
-      padding: 0.5rem 1rem;
-      color: #1db954;
-      text-decoration: none;
-      font-size: 0.9rem;
-      border: 1px solid #1db954;
-      border-radius: 20px;
-      transition: all 0.2s ease;
-  
-      &:hover {
-        background-color: #1db954;
-        color: white;
-      }
+
+    p {
+      color: var(--text);
+      font-size: 0.8rem;
     }
   
     &:hover {

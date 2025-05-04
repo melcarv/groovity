@@ -1,1 +1,12 @@
-<p>album-card works!</p>
+<div class="album-card">
+    <img
+      *ngIf="album?.images?.length"
+      [src]="album.images[0].url"
+      [alt]="album.name"
+    />
+  
+    <h3>{{ album.name }}</h3>
+    <p>Lançado em {{ album.release_date | date:'mediumDate' }}</p>
+    <a [routerLink]="['/album', album.id]">Ver faixas</a>
+  </div>
+  

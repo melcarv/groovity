@@ -1,26 +1,50 @@
 .pagination {
     display: flex;
     justify-content: center;
-    margin: 2rem 0;
+    align-items: center;
     gap: 0.5rem;
+    padding: 1rem;
   
-    button {
+    .page-button {
       background-color: transparent;
+      border: 1px solid #ff003a;
       color: white;
-      border: 1px solid #555;
-      border-radius: 6px;
-      padding: 0.5rem 1rem;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
       cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-weight: bold;
+      padding: 0;
   
-      &.active {
-        background-color: #1db954;
-        color: black;
+      // Estilo especial para os botões de seta
+      &:first-child,
+      &:last-child {
+        font-size: 1.2rem;
+        margin: 0 0.5rem;
+        border: none;
       }
   
-      &:hover {
+      &:hover:not(:disabled) {
         background-color: #333;
       }
+  
+      &.active {
+        background-color: var(--red-0);
+      }
+  
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+  
+    .ellipsis {
+      color: white;
+      padding: 0 0.5rem;
     }
   }
   

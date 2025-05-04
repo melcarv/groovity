@@ -30,7 +30,9 @@ export class SpotifyService {
     const params = new HttpParams()
       .set('limit', limit)
       .set('offset', offset)
-      .set('market', 'BR');
+      .set('market', 'BR')
+      .set('include_groups', 'album,single')
+      .set('album_type', 'album,single');
 
     return this.http.get(`${this.baseUrl}/artists/${id}/albums`, { params });
   }

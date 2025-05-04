@@ -1,31 +1,35 @@
 .app-header {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    background: #181818;
+    gap: 2rem;
+    padding: 1rem 2rem;
+    background-color: var(--background) ;
     color: white;
-    height: 64px;
+    height: 95px;
   
-    .menu-btn {
-      background: none;
-      border: none;
-      color: white;
+    .logo {
       font-size: 1.5rem;
-      padding: 0.5rem;
-      cursor: pointer;
+      color: white;
+      text-decoration: none;
       display: flex;
       align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
+      gap: 8px;
+      transition: color 0.2s ease;
+      white-space: nowrap;
+
+      img {
+        width: 40px;
+        height: 40px;
+      }
   
       &:hover {
-        color: #1db954;
+        color: var(--red-5);
       }
     }
   
     app-search-bar {
       flex: 1;
+      max-width: 500px;
     }
   }
   

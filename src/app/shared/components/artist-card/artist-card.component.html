@@ -1,4 +1,4 @@
-<div class="artist-card">
+<div class="artist-card" (click)="navigateToArtist()">
   <div class="image-container">
     <img
       *ngIf="artist?.images?.length"
@@ -7,6 +7,6 @@
     />
   </div>
   <h3>{{ artist.name }}</h3>
-  <a [routerLink]="['/artist', artist.id]">Ver detalhes</a>
+  <p>Artista</p>
 </div>
   

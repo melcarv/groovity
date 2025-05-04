@@ -1,13 +1,6 @@
 <section class="search-results" *ngIf="query">
     <h2>Resultados para: <strong>{{ query }}</strong></h2>
   
-    <div class="debug-info">
-      Loading: {{ loading }}<br>
-      Error: {{ error }}<br>
-      Artists length: {{ artists.length }}<br>
-      Total: {{ total }}
-    </div>
-  
     <app-loading-spinner *ngIf="loading"></app-loading-spinner>
   
     <app-error-message *ngIf="error" [message]="error"></app-error-message>

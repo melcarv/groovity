@@ -58,8 +58,7 @@ src/
 │   │   │   ├── loading-spinner/
 │   │   │   ├── error-message/
 │   │   │   ├── search-bar/
-│   │   │   ├── header/
-│   │   │   └── side-menu/
+│   │   │   └── header/
 │   │   ├── pipes/
 │   │   │   └── truncate.pipe.ts
 │   │   └── shared.module.ts

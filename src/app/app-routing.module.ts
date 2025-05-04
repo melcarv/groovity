@@ -13,6 +13,16 @@ const routes: Routes = [
       import('./features/search/search.module').then(m => m.SearchModule)
   },
   {
+    path: 'artist/:id',
+    loadChildren: () =>
+      import('./features/artist-detail/artist-detail.module').then(m => m.ArtistDetailModule)
+  },
+  {
+    path: 'album/:id',
+    loadChildren: () =>
+      import('./features/album-detail/album-detail.module').then(m => m.AlbumDetailModule)
+  },
+  {
     path: '**',
     redirectTo: ''
   }

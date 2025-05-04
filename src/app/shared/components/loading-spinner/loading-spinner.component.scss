@@ -1,0 +1,48 @@
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(18, 18, 18, 0.9);
+  z-index: 9999;
+}
+
+.equalizer {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 40px;
+}
+
+.bar {
+  display: inline-block;
+  width: 4px;
+  height: 100%;
+  background-color: var(--green-0);
+  border-radius: 2px;
+  transform-origin: bottom;
+  opacity: 0.8;
+
+  @for $i from 1 through 6 {
+    &:nth-child(#{$i}) {
+      animation: equalize #{random(1500) + 500}ms ease-in-out infinite alternate;
+      animation-delay: #{($i - 1) * 100}ms;
+    }
+  }
+}
+
+@keyframes equalize {
+  0% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+  100% {
+    transform: scaleY(0.3);
+  }
+}

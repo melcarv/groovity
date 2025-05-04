@@ -1,0 +1,163 @@
+.artist-page {
+  min-height: 100vh;
+  background-color: #121212;
+  color: white;
+  position: relative;
+}
+
+.back-button {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  font-size: 16px;
+  padding: 8px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 20px;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+
+  i {
+    font-size: 14px;
+  }
+}
+
+.hero-section {
+  position: relative;
+  height: 400px;
+  background-size: cover;
+  background-position: center;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(18,18,18,1) 100%);
+  }
+}
+
+.hero-content {
+  position: relative;
+  padding: 40px;
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+  gap: 40px;
+  
+  .artist-image {
+    width: 232px;
+    height: 232px;
+    border-radius: 50%;
+    box-shadow: 0 4px 60px rgba(0,0,0,.5);
+  }
+  
+  .artist-info {
+    h1 {
+      font-size: 72px;
+      margin: 0;
+      font-weight: 700;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    .artist-stats {
+      margin-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      
+      .followers {
+        color: #b3b3b3;
+        font-size: 16px;
+      }
+
+      .genres {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+
+        .genre {
+          background: rgba(255,255,255,0.1);
+          padding: 8px 16px;
+          border-radius: 20px;
+          font-size: 14px;
+          color: #fff;
+          transition: background-color 0.3s ease;
+          display: inline-block;
+          text-transform: capitalize;
+
+          &:hover {
+            background: rgba(255,255,255,0.2);
+            cursor: default;
+          }
+        }
+      }
+    }
+  }
+}
+
+.content-section {
+  padding: 32px;
+  
+  section {
+    margin-bottom: 48px;
+    
+    h2 {
+      font-size: 28px;
+      margin-bottom: 32px;
+      color: white;
+      font-weight: 700;
+    }
+  }
+}
+
+.albums-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .hero-section {
+    height: 300px;
+  }
+
+  .hero-content {
+    padding: 24px;
+    gap: 24px;
+
+    .artist-image {
+      width: 160px;
+      height: 160px;
+    }
+
+    .artist-info {
+      h1 {
+        font-size: 48px;
+      }
+    }
+  }
+
+  .content-section {
+    padding: 24px;
+  }
+}
+  
