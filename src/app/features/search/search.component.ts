@@ -64,10 +64,10 @@ export class SearchComponent implements OnInit {
         }
       },
       error: (err) => {
-        console.error('Search error:', err);
         this.error = 'Erro ao buscar artistas';
         this.artists = [];
         this.total = 0;
+        this.loading = false;
       },
       complete: () => {
         this.loading = false;

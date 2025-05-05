@@ -48,7 +48,6 @@ export class ArtistDetailComponent implements OnInit {
         this.loading = false;
       },
       error: (err) => {
-        console.error('Error loading artist data:', err);
         this.error = 'Erro ao carregar dados do artista';
         this.loading = false;
       }
@@ -69,7 +68,6 @@ export class ArtistDetailComponent implements OnInit {
         this.loading = false;
       },
       error: err => {
-        console.error('Error loading albums:', err);
         this.error = 'Erro ao carregar álbuns';
         this.loading = false;
       }

@@ -30,10 +30,6 @@ export class AlbumDetailComponent implements OnInit {
     });
   }
 
-  goBack(): void {
-    this.location.back();
-  }
-
   private fetchAlbumAndArtist(): void {
     this.loading = true;
     this.error = null;
@@ -52,7 +48,6 @@ export class AlbumDetailComponent implements OnInit {
           this.loading = false;
         },
         error: (err) => {
-          console.error('Error loading album and artist data:', err);
           this.error = 'Erro ao carregar dados do álbum';
           this.loading = false;
         }
@@ -86,5 +81,9 @@ export class AlbumDetailComponent implements OnInit {
 
   getArtists(artists: any[]): string {
     return artists.map(artist => artist.name).join(', ');
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 }
