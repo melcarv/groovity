@@ -14,7 +14,7 @@ export class ArtistDetailComponent implements OnInit {
   artist: any;
   albums: any[] = [];
   offset = 0;
-  limit = 12;
+  limit = 15;
   total = 0;
   loading = true;
   error: string | null = null;
@@ -28,6 +28,7 @@ export class ArtistDetailComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.artistId = params['id'];
+      this.offset = 0;
       this.loadArtistData();
     });
   }
@@ -44,19 +45,12 @@ export class ArtistDetailComponent implements OnInit {
         this.artist = data.artist;
         this.albums = data.albums.items;
         this.total = data.albums.total;
-        
-        // Debug logging
-        console.log('Artist data:', {
-          name: this.artist.name,
-          genres: this.artist.genres,
-          hasGenres: Array.isArray(this.artist.genres),
-          genresLength: this.artist.genres?.length
+        console.log('Albums loaded:', {
+          items: this.albums.length,
+          total: this.total,
+          offset: this.offset,
+          currentPage: Math.floor(this.offset / this.limit)
         });
-
-        if (!this.artist.genres) {
-          this.artist.genres = [];
-        }
-
         this.loading = false;
       },
       error: (err) => {
@@ -68,6 +62,11 @@ export class ArtistDetailComponent implements OnInit {
   }
 
   onPageChange(newOffset: number): void {
+    console.log('Page change:', {
+      oldOffset: this.offset,
+      newOffset: newOffset,
+      total: this.total
+    });
     this.offset = newOffset;
     this.fetchAlbums();
   }
@@ -78,6 +77,12 @@ export class ArtistDetailComponent implements OnInit {
       next: res => {
         this.albums = res.items;
         this.total = res.total;
+        console.log('Albums fetched:', {
+          items: this.albums.length,
+          total: this.total,
+          offset: this.offset,
+          currentPage: Math.floor(this.offset / this.limit)
+        });
         this.loading = false;
       },
       error: err => {
@@ -92,7 +97,6 @@ export class ArtistDetailComponent implements OnInit {
     this.location.back();
   }
 
-  // Helper method to check if genres exist
   hasGenres(): boolean {
     return Array.isArray(this.artist?.genres) && this.artist.genres.length > 0;
   }
