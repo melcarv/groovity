@@ -14,8 +14,7 @@
           <div class="genres" *ngIf="hasGenres()">
             <span class="genre" *ngFor="let genre of artist.genres">{{genre}}</span>
           </div>
-          <!-- Debug info -->
-          <div style="color: red" *ngIf="!hasGenres()">No genres available</div>
+          <div style="color: red" *ngIf="!hasGenres()">Sem gênero</div>
         </div>
       </div>
     </div>

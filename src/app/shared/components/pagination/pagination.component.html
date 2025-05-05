@@ -1,27 +1,47 @@
-<nav class="pagination" *ngIf="pages.length > 1">
-    <button 
-      class="page-button"
-      (click)="goToPage(currentPage - 1)"
-      [disabled]="currentPage === 0"
-    >
-      ←
-    </button>
+<nav class="pagination" *ngIf="totalPages > 1">
+  <button 
+    class="page-button"
+    (click)="goToPage(currentPage - 1)"
+    [disabled]="currentPage === 0"
+  >
+    ←
+  </button>
 
-    <button
-      *ngFor="let page of pages"
-      class="page-button"
-      (click)="goToPage(page)"
-      [class.active]="page === currentPage"
-    >
-      {{ page + 1 }}
-    </button>
+  <button
+    *ngIf="showFirstPage"
+    class="page-button"
+    (click)="goToPage(0)"
+  >
+    1
+  </button>
 
-    <button 
-      class="page-button"
-      (click)="goToPage(currentPage + 1)"
-      [disabled]="currentPage === pages.length - 1"
-    >
-      →
-    </button>
-  </nav>
+  <span *ngIf="showFirstPage && pages[0] > 1" class="ellipsis">...</span>
+
+  <button
+    *ngFor="let page of pages"
+    class="page-button"
+    (click)="goToPage(page)"
+    [class.active]="page === currentPage"
+  >
+    {{ page + 1 }}
+  </button>
+
+  <span *ngIf="showLastPage && pages[pages.length - 1] < totalPages - 2" class="ellipsis">...</span>
+
+  <button
+    *ngIf="showLastPage"
+    class="page-button"
+    (click)="goToPage(totalPages - 1)"
+  >
+    {{ totalPages }}
+  </button>
+
+  <button 
+    class="page-button"
+    (click)="goToPage(currentPage + 1)"
+    [disabled]="currentPage === totalPages - 1"
+  >
+    →
+  </button>
+</nav>
   
