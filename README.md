@@ -12,6 +12,7 @@ Groovity é uma aplicação frontend desenvolvida com Angular v16 que consome a 
 - Detalhamento do artista
 - Listagem dos álbuns do artista
 - Detalhamento de um álbum com capa, data e lista de faixas
+- Component de loading
 - Layout responsivo e estilizado com SCSS puro
 
 ---
@@ -19,7 +20,7 @@ Groovity é uma aplicação frontend desenvolvida com Angular v16 que consome a 
 ## 🧰 Tecnologias Utilizadas
 
 - [Angular 16](https://angular.io/)
-- [NodeJs 18.10.0](https://nodejs.org/pt)
+- [NodeJs 18](https://nodejs.org/pt)
 - [RxJS](https://rxjs.dev/)
 - [TypeScript](https://www.typescriptlang.org/)
 - SCSS (sem frameworks visuais externos)
@@ -32,8 +33,8 @@ Groovity é uma aplicação frontend desenvolvida com Angular v16 que consome a 
 A aplicação foi estruturada com foco em separação de responsabilidades, escalabilidade e reutilização de componentes. Utiliza a arquitetura modular do Angular:
 
 - `core/`: serviços centrais e interceptadores globais
-- `shared/`: componentes e pipes reutilizáveis
-- `features/`: módulos de páginas principais com roteamento dedicado
+- `shared/`: componentes reutilizáveis
+- `features/`: módulos de páginas principais
 - `styles/`: SCSS global modularizado
 - `environments/`: variáveis de ambiente por build
 
@@ -59,27 +60,21 @@ src/
 │   │   │   ├── error-message/
 │   │   │   ├── search-bar/
 │   │   │   └── header/
-│   │   ├── pipes/
-│   │   │   └── truncate.pipe.ts
 │   │   └── shared.module.ts
 │   ├── features/
+│   │   ├── home/
 │   │   ├── search/
 │   │   ├── artist-detail/
 │   │   ├── album-detail/
-│   │   ├── not-found/
-│   │   └── features-routing.module.ts
+│   │   └── not-found/
 │   ├── app-routing.module.ts
 │   ├── app.module.ts
-│   └── app.component.{ts,html,scss}
+│   └── app.component.{ts,html,scss, spec}
 │
 ├── assets/
 ├── environments/
-│   ├── environment.ts
-│   └── environment.prod.ts
+│   └── environment.ts
 ├── styles/
-│   ├── base/
-│   ├── layout/
-│   ├── components/
 │   └── main.scss
 ├── styles.scss
 ├── main.ts
@@ -155,21 +150,11 @@ http://localhost:4200
 
 ---
 
-## 🧩 Componentes Extras Implementados
-
-- `pagination`: componente reutilizável de paginação
-- `loading-spinner`: spinner para carregamento de dados
-- `error-message`: exibe mensagens de erro de forma amigável
-- `search-bar`: input desacoplado para reutilização
-- `header` e `footer`: estrutura visual fixa e responsiva
-- `not-found`: tela 404 para rotas inválidas
-
----
-
 ## 💡 Possíveis Melhorias Futuras
 
 - Testes unitários com Jest
--
+- Tela 404 para rotas inválidas
+- Exibição de artistas similares
 
 ---
 

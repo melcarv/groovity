@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { SpotifyService } from 'src/app/core/services/spotify.service';
 import { Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { of } from 'rxjs';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit {
   searchControl = new FormControl('');
   highlightArtist: any = null;
   loading = true;
@@ -23,11 +23,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadFeaturedArtist();
-  }
-
-  ngOnDestroy(): void {
-    // Limpa o form control ao sair
-    this.searchControl.reset();
   }
 
   private loadFeaturedArtist(): void {
@@ -45,7 +40,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.spotifyService.searchArtists(randomArtist, 1, 0).pipe(
       catchError(err => {
-        console.error('Error loading featured artist:', err);
         this.error = 'Erro ao carregar artista em destaque';
         return of({ artists: { items: [] } });
       }),

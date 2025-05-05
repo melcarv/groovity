@@ -7,41 +7,48 @@
     <i class="fas fa-arrow-left"></i> Voltar
   </button>
 
-  <!-- Hero Section -->
-  <div class="hero-section" [style.background-image]="'url(' + (artist.images[0]?.url || '') + ')'">
+  <div class="hero-section">
     <div class="hero-content">
-      <div class="images-container">
-        <img [src]="album.images[0]?.url" [alt]="album.name" class="album-image">
-      </div>
-      <div class="album-info">
-        <span class="album-type">{{ album.album_type | titlecase }}</span>
-        <h1>{{ album.name }}</h1>
-        <div class="album-meta">
-          <span class="artist">{{ artist.name }}</span>
-          <span class="year">{{ album.release_date | date:'yyyy' }}</span>
-          <span class="tracks">{{ album.total_tracks }} faixas</span>
-          <span class="duration">{{ getTotalDuration() }}</span>
-        </div>
+      <img [src]="artist.images[0]?.url" [alt]="artist.name" class="artist-image">
+      <div class="artist-info">
+        <h1>{{ artist.name }}</h1>
       </div>
     </div>
   </div>
 
   <div class="content-section">
-    <div class="tracks-section">
-      <div class="tracks-header">
-        <div class="track-number">#</div>
-        <div class="track-title">Título</div>
-        <div class="track-duration">Duração</div>
+    <div class="album-content">
+      <div class="album-details">
+        <div class="album-header">
+          <img [src]="album.images[0]?.url" [alt]="album.name" class="album-image">
+          <div class="album-info">
+            <span class="album-type">{{ album.album_type | titlecase }}</span>
+            <h2>{{ album.name }}</h2>
+            <div class="album-meta">
+              <span class="year">{{ album.release_date | date:'yyyy' }}</span>
+              <span class="tracks">{{ album.total_tracks }} faixas</span>
+              <span class="duration">{{ getTotalDuration() }}</span>
+            </div>
+          </div>
+        </div>
       </div>
       
-      <div class="tracks-list">
-        <div class="track-item" *ngFor="let track of album.tracks?.items; let i = index">
-          <div class="track-number">{{ track.track_number }}</div>
-          <div class="track-title">
-            <span class="name">{{ track.name }}</span>
-            <span class="artists">{{ getArtists(track.artists) }}</span>
+      <div class="tracks-section">
+        <div class="tracks-header">
+          <div class="track-number">#</div>
+          <div class="track-title">Título</div>
+          <div class="track-duration">Duração</div>
+        </div>
+        
+        <div class="tracks-list">
+          <div class="track-item" *ngFor="let track of album.tracks?.items; let i = index">
+            <div class="track-number">{{ track.track_number }}</div>
+            <div class="track-title">
+              <span class="name">{{ track.name }}</span>
+              <span class="artists">{{ getArtists(track.artists) }}</span>
+            </div>
+            <div class="track-duration">{{ formatDuration(track.duration_ms) }}</div>
           </div>
-          <div class="track-duration">{{ formatDuration(track.duration_ms) }}</div>
         </div>
       </div>
     </div>
