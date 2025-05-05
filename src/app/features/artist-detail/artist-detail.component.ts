@@ -45,12 +45,6 @@ export class ArtistDetailComponent implements OnInit {
         this.artist = data.artist;
         this.albums = data.albums.items;
         this.total = data.albums.total;
-        console.log('Albums loaded:', {
-          items: this.albums.length,
-          total: this.total,
-          offset: this.offset,
-          currentPage: Math.floor(this.offset / this.limit)
-        });
         this.loading = false;
       },
       error: (err) => {
@@ -62,11 +56,6 @@ export class ArtistDetailComponent implements OnInit {
   }
 
   onPageChange(newOffset: number): void {
-    console.log('Page change:', {
-      oldOffset: this.offset,
-      newOffset: newOffset,
-      total: this.total
-    });
     this.offset = newOffset;
     this.fetchAlbums();
   }
@@ -77,12 +66,6 @@ export class ArtistDetailComponent implements OnInit {
       next: res => {
         this.albums = res.items;
         this.total = res.total;
-        console.log('Albums fetched:', {
-          items: this.albums.length,
-          total: this.total,
-          offset: this.offset,
-          currentPage: Math.floor(this.offset / this.limit)
-        });
         this.loading = false;
       },
       error: err => {
