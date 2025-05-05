@@ -9,16 +9,19 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  /**
+   * Controle do formulário para o campo de busca
+   */
   searchControl = new FormControl('');
 
   constructor(public router: Router) {}
 
   ngOnInit() {
-    // Observa as mudanças de rota
+    // Observa as mudanças de rota para gerenciar o estado do campo de busca
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
-      // Se estiver navegando para a home, limpa a busca
+      // Limpa o campo de busca quando navegar para a página inicial
       if (event.url === '/' || event.url === '/home') {
         this.searchControl.reset();
       }

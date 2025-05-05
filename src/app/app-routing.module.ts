@@ -1,6 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+/**
+ * Configuração das rotas da aplicação
+ * Define o carregamento lazy loading dos módulos para cada rota
+ */
 const routes: Routes = [
   {
     path: '',
