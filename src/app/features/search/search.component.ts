@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SpotifyService } from 'src/app/core/services/spotify.service';
 
+/**
+ * Componente responsável pela funcionalidade de busca de artistas
+ * Gerencia a pesquisa, paginação e exibição dos resultados
+ */
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -22,6 +26,10 @@ export class SearchComponent implements OnInit {
     private spotifyService: SpotifyService
   ) {}
 
+  /**
+   * Inicializa o componente e configura a observação dos parâmetros da URL
+   * Atualiza a busca quando os parâmetros mudam
+   */
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       const newQuery = params['q']?.trim() || '';
@@ -41,6 +49,10 @@ export class SearchComponent implements OnInit {
     });
   }
 
+  /**
+   * Realiza a busca de artistas usando o SpotifyService
+   * Atualiza o estado do componente com os resultados ou erros
+   */
   fetchArtists(): void {
     if (!this.query.trim()) {
       this.artists = [];
@@ -54,7 +66,6 @@ export class SearchComponent implements OnInit {
     this.spotifyService.searchArtists(this.query.trim(), this.limit, this.offset).subscribe({
       next: (res) => {
         if (res?.artists?.items) {
-          // Filtra artistas sem imagens
           this.artists = res.artists.items.filter((artist: any) => artist.images?.length > 0);
           this.total = res.artists.total;
         } else {

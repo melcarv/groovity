@@ -4,6 +4,8 @@ Groovity é uma aplicação frontend desenvolvida com Angular v16 que consome a 
 
 > Projeto desenvolvido como parte de um desafio técnico de Front-end Angular para a NTT Data.
 
+![Página principal da aplicação](/src/assets/image/screenshot.png)
+
 ---
 
 ## ✨ Funcionalidades

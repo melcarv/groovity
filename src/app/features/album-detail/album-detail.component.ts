@@ -2,9 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SpotifyService } from 'src/app/core/services/spotify.service';
 import { Location } from '@angular/common';
-import { forkJoin } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
+/**
+ * Componente responsável por exibir os detalhes de um álbum específico
+ * Mostra informações do álbum, artista e lista de faixas
+ */
 @Component({
   selector: 'app-album-detail',
   templateUrl: './album-detail.component.html',
@@ -30,6 +33,8 @@ export class AlbumDetailComponent implements OnInit {
     });
   }
 
+  
+  //Carrega os dados do álbum e em seguida os dados do artista principal usando switchMap para encadear as requisições
   private fetchAlbumAndArtist(): void {
     this.loading = true;
     this.error = null;
