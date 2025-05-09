@@ -2,7 +2,7 @@
 
 Groovity é uma aplicação frontend desenvolvida com Angular v16 que consome a API pública do Spotify. O objetivo é permitir aos usuários buscar artistas, visualizar seus álbuns e faixas, explorando o conteúdo musical de forma simples, responsiva e com foco em boas práticas de desenvolvimento.
 
-![Página principal da aplicação](/src/assets/image/screenshot.png)
+![Página principal da aplicação](src/assets/image/screenshot.png)
 
 ---
 
