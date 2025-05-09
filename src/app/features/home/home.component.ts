@@ -31,25 +31,25 @@ export class HomeComponent implements OnInit {
 
   /**
    * Carrega um artista aleatório de uma lista predefinida de artistas populares
-   * para exibir em destaque na página inicial
+   * para exibir em destaque na página inicial.
    */
   private loadFeaturedArtist(): void {
     this.loading = true;
     this.error = null;
 
-    // Lista de artistas para seleção aleatória
+    // Lista com nomes de artistas populares. Um deles será selecionado aleatoriamente para aparecer na home.
     const popularArtists = [
       'Taylor Swift', 'Ariana Grande', 'Lady Gaga',
       'Rihanna', 'Justin Bieber', 'Beyoncé', 
       'Garbage', 'Placebo',
-      'Depeche Mode', 'The Smiths', 'Madonna',
+      'Depeche Mode', 'Madonna',
       ''
     ];
 
     // Seleciona um artista aleatório da lista
     const randomArtist = popularArtists[Math.floor(Math.random() * popularArtists.length)];
 
-    // Busca os detalhes do artista selecionado
+    // Busca os detalhes do artista selecionado. Se der erro, exibe uma mensagem. Se encontrou algum artista, salva o primeiro para exibir na tela.
     this.spotifyService.searchArtists(randomArtist, 1, 0).pipe(
       catchError(err => {
         this.error = 'Erro ao carregar artista em destaque';

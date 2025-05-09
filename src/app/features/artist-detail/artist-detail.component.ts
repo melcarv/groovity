@@ -63,14 +63,14 @@ export class ArtistDetailComponent implements OnInit {
   }
 
   
-//Manipula a mudança de página na lista de álbuns
+//Atualiza o valor do offset (página atual) e busca apenas os álbuns de novo, sem repetir a requisição do artista.
   onPageChange(newOffset: number): void {
     this.offset = newOffset;
     this.fetchAlbums();
   }
 
 
-//Atualiza a lista de álbuns com base na página atual
+//Faz uma nova chamada para pegar somente os álbuns quando a página mudar, reutilizando
   private fetchAlbums(): void {
     this.loading = true;
     this.spotifyService.getArtistAlbums(this.artistId, this.limit, this.offset).subscribe({
@@ -84,10 +84,6 @@ export class ArtistDetailComponent implements OnInit {
         this.loading = false;
       }
     });
-  }
-
-  goBack(): void {
-    this.location.back();
   }
 
 //Verifica se o artista possui gêneros musicais cadastrados

@@ -3,7 +3,7 @@
 <app-error-message *ngIf="error" [message]="error"></app-error-message>
 
 <div class="artist-page" *ngIf="!loading && !error && artist">
-  <!-- Hero Section -->
+
   <div class="hero-section" [style.background-image]="'url(' + (artist.images[0]?.url || '') + ')'">
     <div class="hero-content">
       <img [src]="artist.images[0]?.url" [alt]="artist.name" class="artist-image">
@@ -21,7 +21,7 @@
   </div>
 
   <div class="content-section">
-    <!-- Albums Section -->
+
     <section class="albums-section" *ngIf="albums.length">
       <h2>Álbuns</h2>
       <div class="albums-grid">

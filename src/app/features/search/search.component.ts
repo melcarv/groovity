@@ -31,6 +31,7 @@ export class SearchComponent implements OnInit {
    * Atualiza a busca quando os parâmetros mudam
    */
   ngOnInit(): void {
+    //Quando o componente é carregado, ele escuta a URL. Se o parâmetro q (query) ou offset mudar, ele dispara uma nova busca.
     this.route.queryParams.subscribe(params => {
       const newQuery = params['q']?.trim() || '';
       const newOffset = +params['offset'] || 0;
@@ -63,6 +64,7 @@ export class SearchComponent implements OnInit {
     this.loading = true;
     this.error = null;
     
+    //Chama o método do SpotifyService para buscar artistas usando a query da URL.
     this.spotifyService.searchArtists(this.query.trim(), this.limit, this.offset).subscribe({
       next: (res) => {
         if (res?.artists?.items) {
@@ -86,6 +88,7 @@ export class SearchComponent implements OnInit {
     });
   }
 
+  //Esse método é chamado pelo componente de paginação quando o usuário muda de página.
   onPageChange(newOffset: number): void {
     this.router.navigate([], {
       queryParams: {

@@ -19,6 +19,7 @@ export class PaginationComponent implements OnChanges {
   pages: number[] = [];
   currentPage = 0;
 
+  //É chamado automaticamente sempre que um @Input mudar.
   ngOnChanges(): void {
     this.currentPage = Math.floor(this.offset / this.limit);
     const totalPages = Math.ceil(this.total / this.limit);
@@ -43,18 +44,23 @@ export class PaginationComponent implements OnChanges {
     }
   }
 
+  //Calcula o novo offset, e emite o evento para o componente pai (ex: SearchComponent), que então atualiza a busca com esse novo valor
   goToPage(page: number): void {
     const totalPages = Math.ceil(this.total / this.limit);
     if (page >= 0 && page < totalPages) {
       this.pageChange.emit(page * this.limit);
     }
   }
+
+  //Calcula quantas páginas existem no total com base no número total de itens e o limite por página.
   get totalPages(): number {
     return Math.ceil(this.total / this.limit);
   }
+
   get showFirstPage(): boolean {
     return this.pages.length > 0 && this.pages[0] > 0;
   }
+
   get showLastPage(): boolean {
     return this.pages.length > 0 && this.pages[this.pages.length - 1] < this.totalPages - 1;
   }

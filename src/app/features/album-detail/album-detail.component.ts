@@ -34,7 +34,7 @@ export class AlbumDetailComponent implements OnInit {
   }
 
   
-  //Carrega os dados do álbum e em seguida os dados do artista principal usando switchMap para encadear as requisições
+  //Carrega os dados do álbum pelo albumID e em seguida os dados do artista principal usando switchMap para encadear as requisições
   private fetchAlbumAndArtist(): void {
     this.loading = true;
     this.error = null;
@@ -59,12 +59,14 @@ export class AlbumDetailComponent implements OnInit {
       });
   }
 
+  //Converte a duração de uma faixa de milissegundos para o formato seg:min
   formatDuration(ms: number): string {
     const minutes = Math.floor(ms / 60000);
     const seconds = Math.floor((ms % 60000) / 1000);
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   }
 
+  //Soma o tempo de todas as faixas para e retorna o tempo total do album
   getTotalDuration(): string {
     if (!this.album?.tracks?.items) return '0:00';
     
@@ -84,10 +86,12 @@ export class AlbumDetailComponent implements OnInit {
     return `${minutes} min ${seconds} s`;
   }
 
+  // Concatena os nomes dos artistas em uma única string, separados por vírgula (por exemplo: artistas que colaboraram com uma faixa)
   getArtists(artists: any[]): string {
     return artists.map(artist => artist.name).join(', ');
   }
 
+  //Retorna para página anterior
   goBack(): void {
     this.location.back();
   }
