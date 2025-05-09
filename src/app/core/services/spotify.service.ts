@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Artist, Album, SearchResponse, PagedResponse } from '../models/spotify.models';
 
 /**
  * Serviço responsável por realizar as requisições à API do Spotify
@@ -20,7 +21,7 @@ export class SpotifyService {
    * @param offset Índice inicial para paginação
    * @returns Observable com os resultados da busca
    */
-  searchArtists(query: string, limit = 10, offset = 0): Observable<any> {
+  searchArtists(query: string, limit = 10, offset = 0): Observable<SearchResponse> {
     const searchQuery = `artist:"${query}"`;
     
     const params = new HttpParams()
@@ -30,7 +31,7 @@ export class SpotifyService {
       .set('offset', offset)
       .set('market', 'BR');
 
-    return this.http.get(`${this.baseUrl}/search`, { params });
+    return this.http.get<SearchResponse>(`${this.baseUrl}/search`, { params });
   }
 
   /**
@@ -38,8 +39,8 @@ export class SpotifyService {
    * @param id ID do artista no Spotify
    * @returns Observable com os detalhes do artista
    */
-  getArtist(id: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/artists/${id}`);
+  getArtist(id: string): Observable<Artist> {
+    return this.http.get<Artist>(`${this.baseUrl}/artists/${id}`);
   }
 
   /**
@@ -49,7 +50,7 @@ export class SpotifyService {
    * @param offset Índice inicial para paginação
    * @returns Observable com a lista de álbuns do artista
    */
-  getArtistAlbums(id: string, limit = 10, offset = 0): Observable<any> {
+  getArtistAlbums(id: string, limit = 10, offset = 0): Observable<PagedResponse<Album>> {
     const params = new HttpParams()
       .set('limit', limit)
       .set('offset', offset)
@@ -57,7 +58,7 @@ export class SpotifyService {
       .set('include_groups', 'album,single')  // Inclui álbuns e singles
       .set('album_type', 'album,single');  // Filtra por tipos específicos
 
-    return this.http.get(`${this.baseUrl}/artists/${id}/albums`, { params });
+    return this.http.get<PagedResponse<Album>>(`${this.baseUrl}/artists/${id}/albums`, { params });
   }
 
   /**
@@ -65,7 +66,7 @@ export class SpotifyService {
    * @param id ID do álbum no Spotify
    * @returns Observable com os detalhes do álbum
    */
-  getAlbum(id: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/albums/${id}`);
+  getAlbum(id: string): Observable<Album> {
+    return this.http.get<Album>(`${this.baseUrl}/albums/${id}`);
   }
 }

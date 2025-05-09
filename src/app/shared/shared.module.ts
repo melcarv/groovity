@@ -19,7 +19,6 @@ import { RouterModule } from '@angular/router';
     PaginationComponent,
     AlbumCardComponent,
     ArtistCardComponent
-    
   ],
   imports: [
     CommonModule,

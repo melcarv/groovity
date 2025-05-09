@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, takeUntil, switchMap, catchError } from 'rxjs/operators';
 
 /**
  * Componente responsável pela barra de pesquisa
@@ -14,53 +14,52 @@ import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
   styleUrls: ['./search-bar.component.scss']
 })
 export class SearchBarComponent implements OnInit, OnDestroy {
-  /** Controle do formulário para o campo de busca */
   @Input() control: FormControl = new FormControl('');
   @Input() placeholder = 'Buscar...';
-  /** Evento emitido quando o texto da busca muda */
   @Output() queryChange = new EventEmitter<string>();
   
-  private subscription: Subscription | null = null;
+  private destroy$ = new Subject<void>();
 
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    this.subscription = this.control.valueChanges
+    this.control.valueChanges
       .pipe(
+        takeUntil(this.destroy$),
         debounceTime(600),
         distinctUntilChanged(),
-        filter(query => query?.trim().length > 0)
+        filter(query => query?.trim().length > 0),
+        switchMap(query => {
+          this.onQueryChange(query);
+          return this.navigateToSearch(query);
+        }),
+        catchError(error => {
+          console.error('Erro na busca:', error);
+          return [];
+        })
       )
-      .subscribe(query => {
-        this.navigateToSearch(query);
-      });
+      .subscribe();
   }
 
-  /**
-   * Limpa a subscription ao destruir o componente para evitar memory leaks
-   */
   ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   /**
-   * Navega para a página de resultados com o termo de busca
+   * Navega para a rota /search?q=termo, ativando a página de resultados de busca.
    * @param query Termo de busca a ser pesquisado
    */
-  navigateToSearch(query: string): void {
+  navigateToSearch(query: string): Promise<boolean> {
     if (query?.trim()) {
-      this.router.navigate(['/search'], {
+      return this.router.navigate(['/search'], {
         queryParams: { q: query }
       });
     }
+    return Promise.resolve(false);
   }
 
-  /**
-   * Emite evento quando o texto da busca é alterado
-   * @param query Novo termo de busca
-   */
+  //Se alguém quiser reagir à mudança da query fora do componente (como atualizar um estado pai), pode ouvir esse evento.
   onQueryChange(query: string): void {
     this.queryChange.emit(query);
   }
