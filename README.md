@@ -2,52 +2,32 @@
 
 Groovity é uma aplicação frontend desenvolvida com Angular v16 que consome a API pública do Spotify. O objetivo é permitir aos usuários buscar artistas, visualizar seus álbuns e faixas, explorando o conteúdo musical de forma simples, responsiva e com foco em boas práticas de desenvolvimento.
 
-> Projeto desenvolvido como parte de um desafio técnico de Front-end Angular para a NTT Data.
-
 ![Página principal da aplicação](/src/assets/image/screenshot.png)
 
 ---
 
 ## ✨ Funcionalidades
 
-- Busca de artistas
-- Detalhamento do artista
-- Listagem dos álbuns do artista
-- Detalhamento de um álbum com capa, data e lista de faixas
-- Component de loading
-- Layout responsivo e estilizado com SCSS puro
+- Busca de artistas com resultados em tempo real
+- Listagem dos álbuns do artista com ordenação
+- Detalhamento de álbum com capa, data de lançamento, duração e lista de faixas
 
 ---
 
-## 🧰 Tecnologias Utilizadas
+## 🏗️ Arquitetura e Práticas
 
-- [Angular 16](https://angular.io/)
-- [NodeJs 18](https://nodejs.org/pt)
-- [RxJS](https://rxjs.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
-- SCSS (sem frameworks visuais externos)
-- [Spotify Web API](https://developer.spotify.com/documentation/web-api/)
-
----
-
-## 🏗️ Arquitetura do Projeto
-
-A aplicação foi estruturada com foco em separação de responsabilidades, escalabilidade e reutilização de componentes. Utiliza a arquitetura modular do Angular:
-
-- `core/`: serviços centrais e interceptadores globais
+### Estrutura Modular
+- `core/`: serviços centrais, interceptadores globais e modelos
 - `shared/`: componentes reutilizáveis
 - `features/`: módulos de páginas principais
-- `styles/`: SCSS global modularizado
 - `environments/`: variáveis de ambiente por build
 
----
-
-## 📁 Estrutura do projeto
-
+### Estrutura do Projeto
 ```txt
 src/
 ├── app/
 │   ├── core/
+│   │   ├── models/
 │   │   ├── services/
 │   │   │   ├── auth.service.ts
 │   │   │   └── spotify.service.ts
@@ -82,6 +62,24 @@ src/
 ├── main.ts
 ├── index.html
 ```
+
+### Práticas de Desenvolvimento
+- **Lazy Loading**: Carregamento sob demanda dos módulos
+- **RxJS**: Gerenciamento de estado e requisições
+- **Clean Code**: Componentes focados e bem documentados
+- **TypeScript**: Tipagem forte e interfaces
+- **SCSS**: Estilização modular e responsiva
+
+---
+
+## 🧰 Tecnologias
+
+- [Angular 16](https://angular.io/)
+- [NodeJs 18](https://nodejs.org/pt)
+- [RxJS](https://rxjs.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- SCSS (sem frameworks visuais externos)
+- [Spotify Web API](https://developer.spotify.com/documentation/web-api/)
 
 ---
 
@@ -154,9 +152,12 @@ http://localhost:4200
 
 ## 💡 Possíveis Melhorias Futuras
 
-- Testes unitários com Jest
-- Tela 404 para rotas inválidas
-- Exibição de artistas similares
+- [ ] Implementação de testes unitários com Jest
+- [ ] Adição de tema claro
+- [ ] Exibição de artistas similares
+- [ ] Integração com outras APIs de música
+- [ ] Histórico de buscas
+- [ ] Tela 404 para rotas inválidas
 
 ---
 
