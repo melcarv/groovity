@@ -14,6 +14,24 @@ Groovity é uma aplicação frontend desenvolvida com Angular v16 que consome a 
 
 ---
 
+## 🧰 Tecnologias
+
+- [Angular 16](https://angular.io/)
+- [NodeJs 18](https://nodejs.org/pt)
+- [RxJS](https://rxjs.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- SCSS (sem frameworks visuais externos)
+- [Spotify Web API](https://developer.spotify.com/documentation/web-api/)
+
+### Práticas de Desenvolvimento
+- **Lazy Loading**: Carregamento sob demanda dos módulos
+- **RxJS**: Gerenciamento de estado e requisições
+- **Clean Code**: Componentes focados e bem documentados
+- **TypeScript**: Tipagem forte e interfaces
+- **SCSS**: Estilização modular e responsiva
+
+---
+
 ## 🏗️ Arquitetura e Práticas
 
 ### Estrutura Modular
@@ -62,24 +80,6 @@ src/
 ├── main.ts
 ├── index.html
 ```
-
-### Práticas de Desenvolvimento
-- **Lazy Loading**: Carregamento sob demanda dos módulos
-- **RxJS**: Gerenciamento de estado e requisições
-- **Clean Code**: Componentes focados e bem documentados
-- **TypeScript**: Tipagem forte e interfaces
-- **SCSS**: Estilização modular e responsiva
-
----
-
-## 🧰 Tecnologias
-
-- [Angular 16](https://angular.io/)
-- [NodeJs 18](https://nodejs.org/pt)
-- [RxJS](https://rxjs.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
-- SCSS (sem frameworks visuais externos)
-- [Spotify Web API](https://developer.spotify.com/documentation/web-api/)
 
 ---
 
