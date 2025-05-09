@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SpotifyService } from 'src/app/core/services/spotify.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subject, Observable } from 'rxjs';
 import { Location } from '@angular/common';
+import { takeUntil, shareReplay, catchError, finalize } from 'rxjs/operators';
 
 /**
  * Componente responsável por exibir os detalhes de um artista específico
@@ -13,7 +14,7 @@ import { Location } from '@angular/common';
   templateUrl: './artist-detail.component.html',
   styleUrls: ['./artist-detail.component.scss']
 })
-export class ArtistDetailComponent implements OnInit {
+export class ArtistDetailComponent implements OnInit, OnDestroy {
   artistId!: string;
   artist: any;
   albums: any[] = [];
@@ -22,6 +23,10 @@ export class ArtistDetailComponent implements OnInit {
   total = 0;
   loading = true;
   error: string | null = null;
+  
+  private destroy$ = new Subject<void>();
+  private artistData$!: Observable<any>;
+  private albumsData$!: Observable<any>;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,11 +35,15 @@ export class ArtistDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.artistId = params['id'];
-      this.offset = 0;
+    this.artistId = this.route.snapshot.paramMap.get('id') || '';
+    if (this.artistId) {
       this.loadArtistData();
-    });
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   /**
@@ -45,48 +54,75 @@ export class ArtistDetailComponent implements OnInit {
     this.loading = true;
     this.error = null;
 
+    // Cache das requisições usando shareReplay
+    this.artistData$ = this.spotifyService.getArtist(this.artistId).pipe(
+      shareReplay(1)
+    );
+
+    this.albumsData$ = this.spotifyService.getArtistAlbums(
+      this.artistId,
+      this.limit,
+      this.offset
+    ).pipe(
+      shareReplay(1)
+    );
+
     forkJoin({
-      artist: this.spotifyService.getArtist(this.artistId),
-      albums: this.spotifyService.getArtistAlbums(this.artistId, this.limit, this.offset)
-    }).subscribe({
+      artist: this.artistData$,
+      albums: this.albumsData$
+    })
+    .pipe(
+      takeUntil(this.destroy$),
+      catchError(error => {
+        this.error = 'Erro ao carregar dados do artista';
+        console.error('Erro:', error);
+        throw error;
+      }),
+      finalize(() => this.loading = false)
+    )
+    .subscribe({
       next: (data) => {
         this.artist = data.artist;
         this.albums = data.albums.items;
         this.total = data.albums.total;
-        this.loading = false;
-      },
-      error: (err) => {
-        this.error = 'Erro ao carregar dados do artista';
-        this.loading = false;
       }
     });
   }
 
-  
-//Atualiza o valor do offset (página atual) e busca apenas os álbuns de novo, sem repetir a requisição do artista.
+  //Atualiza o valor do offset (página atual) e busca apenas os álbuns de novo, sem repetir a requisição do artista.
   onPageChange(newOffset: number): void {
     this.offset = newOffset;
     this.fetchAlbums();
   }
 
-
-//Faz uma nova chamada para pegar somente os álbuns quando a página mudar, reutilizando
+  //Faz uma nova chamada para pegar somente os álbuns quando a página mudar, reutilizando
   private fetchAlbums(): void {
     this.loading = true;
-    this.spotifyService.getArtistAlbums(this.artistId, this.limit, this.offset).subscribe({
+    
+    this.albumsData$ = this.spotifyService.getArtistAlbums(
+      this.artistId,
+      this.limit,
+      this.offset
+    ).pipe(
+      shareReplay(1),
+      takeUntil(this.destroy$),
+      catchError(error => {
+        this.error = 'Erro ao carregar álbuns';
+        console.error('Erro:', error);
+        throw error;
+      }),
+      finalize(() => this.loading = false)
+    );
+
+    this.albumsData$.subscribe({
       next: res => {
         this.albums = res.items;
         this.total = res.total;
-        this.loading = false;
-      },
-      error: err => {
-        this.error = 'Erro ao carregar álbuns';
-        this.loading = false;
       }
     });
   }
 
-//Verifica se o artista possui gêneros musicais cadastrados
+  //Verifica se o artista possui gêneros musicais cadastrados
   hasGenres(): boolean {
     return Array.isArray(this.artist?.genres) && this.artist.genres.length > 0;
   }

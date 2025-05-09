@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Observable, of, BehaviorSubject } from 'rxjs';
+import { map, tap, shareReplay, filter } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 /**
@@ -16,6 +16,9 @@ export class AuthService {
   private tokenTimestamp: number | null = null;
   /** Duração de validade do token em milissegundos (1 hora) */
   private readonly tokenDuration = 3600 * 1000; // 1h em ms
+  
+  private tokenSubject = new BehaviorSubject<string | null>(null);
+  private tokenRequest$: Observable<string> | null = null;
 
   constructor(private http: HttpClient) {}
 
@@ -27,21 +30,45 @@ export class AuthService {
    */
   getToken(): Observable<string> {
     const now = Date.now();
-    // Verifica se o token atual ainda é válido
-    const isValid = this.accessToken && this.tokenTimestamp && now - this.tokenTimestamp < this.tokenDuration;
+    const isValid = this.accessToken && 
+                   this.tokenTimestamp && 
+                   now - this.tokenTimestamp < this.tokenDuration;
 
-    if (isValid) {
-      return of(this.accessToken!);
+    if (isValid && this.accessToken) {
+      return of(this.accessToken);
     }
 
-    // Solicita um novo token ao servidor
-    return this.http.get<{ access_token: string }>(environment.spotifyTokenUrl).pipe(
-      map(res => res.access_token),
-      tap(token => {
-        // Armazena o novo token e seu timestamp
-        this.accessToken = token;
-        this.tokenTimestamp = Date.now();
-      })
+    // Se já existe uma requisição em andamento, retorna ela
+    if (this.tokenRequest$) {
+      return this.tokenRequest$;
+    }
+
+    // Cria uma nova requisição de token
+    this.tokenRequest$ = this.http.get<{ access_token: string }>(environment.spotifyTokenUrl)
+      .pipe(
+        map(res => res.access_token),
+        tap(token => {
+          this.accessToken = token;
+          this.tokenTimestamp = Date.now();
+          this.tokenSubject.next(token);
+        }),
+        shareReplay(1)
+      );
+
+    return this.tokenRequest$;
+  }
+
+  refreshToken(): Observable<string> {
+    // Força uma nova requisição de token
+    this.accessToken = null;
+    this.tokenTimestamp = null;
+    this.tokenRequest$ = null;
+    return this.getToken();
+  }
+
+  getCurrentToken(): Observable<string> {
+    return this.tokenSubject.asObservable().pipe(
+      filter((token): token is string => token !== null)
     );
   }
 }

@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, takeUntil, switchMap, catchError } from 'rxjs/operators';
 
 /**
  * Componente responsável pela barra de pesquisa
@@ -18,40 +18,45 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   @Input() placeholder = 'Buscar...';
   @Output() queryChange = new EventEmitter<string>();
   
-  private subscription: Subscription | null = null;
+  private destroy$ = new Subject<void>();
 
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    this.subscription = this.control.valueChanges
+    this.control.valueChanges
       .pipe(
-        debounceTime(600), //Espera 600ms sem digitar antes de agir
+        takeUntil(this.destroy$),
+        debounceTime(600),
         distinctUntilChanged(),
-        filter(query => query?.trim().length > 0)
+        filter(query => query?.trim().length > 0),
+        switchMap(query => {
+          this.onQueryChange(query);
+          return this.navigateToSearch(query);
+        }),
+        catchError(error => {
+          console.error('Erro na busca:', error);
+          return [];
+        })
       )
-      .subscribe(query => {
-        this.navigateToSearch(query);
-      });
+      .subscribe();
   }
 
-  
-  //Cancela a inscrição quando o componente for destruído para evitar memory leaks.
   ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   /**
    * Navega para a rota /search?q=termo, ativando a página de resultados de busca.
    * @param query Termo de busca a ser pesquisado
    */
-  navigateToSearch(query: string): void {
+  navigateToSearch(query: string): Promise<boolean> {
     if (query?.trim()) {
-      this.router.navigate(['/search'], {
+      return this.router.navigate(['/search'], {
         queryParams: { q: query }
       });
     }
+    return Promise.resolve(false);
   }
 
   //Se alguém quiser reagir à mudança da query fora do componente (como atualizar um estado pai), pode ouvir esse evento.
