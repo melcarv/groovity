@@ -4,6 +4,7 @@ import { SpotifyService } from 'src/app/core/services/spotify.service';
 import { forkJoin, Subject, Observable } from 'rxjs';
 import { Location } from '@angular/common';
 import { takeUntil, shareReplay, catchError, finalize } from 'rxjs/operators';
+import { Artist, Album } from 'src/app/core/models/spotify.models';
 
 /**
  * Componente responsável por exibir os detalhes de um artista específico
@@ -16,8 +17,8 @@ import { takeUntil, shareReplay, catchError, finalize } from 'rxjs/operators';
 })
 export class ArtistDetailComponent implements OnInit, OnDestroy {
   artistId!: string;
-  artist: any;
-  albums: any[] = [];
+  artist: Artist | null = null;
+  albums: Album[] = [];
   offset = 0;
   limit = 15;
   total = 0;
@@ -25,7 +26,7 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
   error: string | null = null;
   
   private destroy$ = new Subject<void>();
-  private artistData$!: Observable<any>;
+  private artistData$!: Observable<Artist>;
   private albumsData$!: Observable<any>;
 
   constructor(
@@ -89,13 +90,18 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  //Atualiza o valor do offset (página atual) e busca apenas os álbuns de novo, sem repetir a requisição do artista.
+  /**
+   * Atualiza a lista de álbuns quando a página é alterada
+   * @param newOffset Novo offset para paginação
+   */
   onPageChange(newOffset: number): void {
     this.offset = newOffset;
     this.fetchAlbums();
   }
 
-  //Faz uma nova chamada para pegar somente os álbuns quando a página mudar, reutilizando
+  /**
+   * Faz uma nova chamada para pegar somente os álbuns quando a página mudar
+   */
   private fetchAlbums(): void {
     this.loading = true;
     
@@ -122,8 +128,18 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  //Verifica se o artista possui gêneros musicais cadastrados
+  /**
+   * Navega de volta para a página anterior
+   */
+  goBack(): void {
+    this.location.back();
+  }
+
+  /**
+   * Verifica se o artista possui gêneros musicais
+   * @returns true se o artista tiver gêneros, false caso contrário
+   */
   hasGenres(): boolean {
-    return Array.isArray(this.artist?.genres) && this.artist.genres.length > 0;
+    return Boolean(this.artist?.genres?.length);
   }
 }

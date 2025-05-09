@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SpotifyService } from 'src/app/core/services/spotify.service';
 import { Location } from '@angular/common';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, takeUntil, catchError, finalize } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { Album, Artist, Track } from 'src/app/core/models/spotify.models';
 
 /**
  * Componente responsável por exibir os detalhes de um álbum específico
@@ -13,12 +15,13 @@ import { switchMap } from 'rxjs/operators';
   templateUrl: './album-detail.component.html',
   styleUrls: ['./album-detail.component.scss']
 })
-export class AlbumDetailComponent implements OnInit {
+export class AlbumDetailComponent implements OnInit, OnDestroy {
   albumId!: string;
-  album: any;
-  artist: any;
+  album: Album | null = null;
+  artist: Artist | null = null;
   loading = true;
   error: string | null = null;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private route: ActivatedRoute,
@@ -33,66 +36,78 @@ export class AlbumDetailComponent implements OnInit {
     });
   }
 
-  
-  //Carrega os dados do álbum pelo albumID e em seguida os dados do artista principal usando switchMap para encadear as requisições
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  /**
+   * Carrega os dados do álbum pelo albumID e em seguida os dados do artista principal
+   * usando switchMap para encadear as requisições
+   */
   private fetchAlbumAndArtist(): void {
     this.loading = true;
     this.error = null;
 
     this.spotifyService.getAlbum(this.albumId)
       .pipe(
+        takeUntil(this.destroy$),
         switchMap(album => {
           this.album = album;
           const artistId = album.artists[0].id;
           return this.spotifyService.getArtist(artistId);
-        })
+        }),
+        catchError(error => {
+          this.error = 'Erro ao carregar dados do álbum';
+          throw error;
+        }),
+        finalize(() => this.loading = false)
       )
       .subscribe({
         next: (artist) => {
           this.artist = artist;
-          this.loading = false;
-        },
-        error: (err) => {
-          this.error = 'Erro ao carregar dados do álbum';
-          this.loading = false;
         }
       });
   }
 
-  //Converte a duração de uma faixa de milissegundos para o formato seg:min
-  formatDuration(ms: number): string {
-    const minutes = Math.floor(ms / 60000);
-    const seconds = Math.floor((ms % 60000) / 1000);
+  /**
+   * Navega de volta para a página anterior
+   */
+  goBack(): void {
+    this.location.back();
+  }
+
+  /**
+   * Formata a duração de uma faixa em minutos e segundos
+   * @param durationMs Duração em milissegundos
+   * @returns String formatada (ex: "3:45")
+   */
+  formatDuration(durationMs: number): string {
+    const minutes = Math.floor(durationMs / 60000);
+    const seconds = Math.floor((durationMs % 60000) / 1000);
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   }
 
-  //Soma o tempo de todas as faixas para e retorna o tempo total do album
+  /**
+   * Retorna a duração total do álbum formatada
+   * @returns String com a duração total formatada
+   */
   getTotalDuration(): string {
     if (!this.album?.tracks?.items) return '0:00';
     
-    const totalMs = this.album.tracks.items.reduce((acc: number, track: any) => {
-      return acc + track.duration_ms;
-    }, 0);
-
-    const minutes = Math.floor(totalMs / 60000);
-    const seconds = Math.floor((totalMs % 60000) / 1000);
-    
-    if (minutes >= 60) {
-      const hours = Math.floor(minutes / 60);
-      const remainingMinutes = minutes % 60;
-      return `${hours} h ${remainingMinutes} min`;
-    }
-    
-    return `${minutes} min ${seconds} s`;
+    const totalMs = this.album.tracks.items.reduce(
+      (total: number, track: Track) => total + track.duration_ms,
+      0
+    );
+    return this.formatDuration(totalMs);
   }
 
-  // Concatena os nomes dos artistas em uma única string, separados por vírgula (por exemplo: artistas que colaboraram com uma faixa)
-  getArtists(artists: any[]): string {
+  /**
+   * Retorna os nomes dos artistas de uma faixa separados por vírgula
+   * @param artists Array de artistas da faixa
+   * @returns String com os nomes dos artistas
+   */
+  getArtists(artists: Artist[]): string {
     return artists.map(artist => artist.name).join(', ');
-  }
-
-  //Retorna para página anterior
-  goBack(): void {
-    this.location.back();
   }
 }

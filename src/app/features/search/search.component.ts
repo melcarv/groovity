@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SpotifyService } from 'src/app/core/services/spotify.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Artist } from 'src/app/core/models/spotify.models';
 
 /**
  * Componente responsável pela funcionalidade de busca de artistas
@@ -11,14 +14,15 @@ import { SpotifyService } from 'src/app/core/services/spotify.service';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit {
-  artists: any[] = [];
+export class SearchComponent implements OnInit, OnDestroy {
+  artists: Artist[] = [];
   query: string = '';
   offset = 0;
   limit = 12;
   total = 0;
   loading = false;
   error: string | null = null;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private route: ActivatedRoute,
@@ -31,23 +35,18 @@ export class SearchComponent implements OnInit {
    * Atualiza a busca quando os parâmetros mudam
    */
   ngOnInit(): void {
-    //Quando o componente é carregado, ele escuta a URL. Se o parâmetro q (query) ou offset mudar, ele dispara uma nova busca.
-    this.route.queryParams.subscribe(params => {
-      const newQuery = params['q']?.trim() || '';
-      const newOffset = +params['offset'] || 0;
+    this.route.queryParams
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(params => {
+        this.query = params['q'] || '';
+        this.offset = parseInt(params['offset'] || '0', 10);
+        this.fetchArtists();
+      });
+  }
 
-      // Só atualiza se a query for diferente ou se mudou o offset
-      if (newQuery !== this.query || this.offset !== newOffset) {
-        this.query = newQuery;
-        this.offset = newOffset;
-        if (this.query) {
-          this.fetchArtists();
-        } else {
-          this.artists = [];
-          this.total = 0;
-        }
-      }
-    });
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   /**
@@ -64,36 +63,41 @@ export class SearchComponent implements OnInit {
     this.loading = true;
     this.error = null;
     
-    //Chama o método do SpotifyService para buscar artistas usando a query da URL.
-    this.spotifyService.searchArtists(this.query.trim(), this.limit, this.offset).subscribe({
-      next: (res) => {
-        if (res?.artists?.items) {
-          this.artists = res.artists.items.filter((artist: any) => artist.images?.length > 0);
-          this.total = res.artists.total;
-        } else {
-          this.error = 'Formato de resposta inválido';
+    this.spotifyService.searchArtists(this.query.trim(), this.limit, this.offset)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          if (res?.artists?.items) {
+            this.artists = res.artists.items.filter(artist => artist.images?.length > 0);
+            this.total = res.artists.total;
+          } else {
+            this.error = 'Formato de resposta inválido';
+            this.artists = [];
+            this.total = 0;
+          }
+        },
+        error: (err) => {
+          this.error = 'Erro ao buscar artistas';
           this.artists = [];
           this.total = 0;
+        },
+        complete: () => {
+          this.loading = false;
         }
-      },
-      error: (err) => {
-        this.error = 'Erro ao buscar artistas';
-        this.artists = [];
-        this.total = 0;
-        this.loading = false;
-      },
-      complete: () => {
-        this.loading = false;
-      }
-    });
+      });
   }
 
-  //Esse método é chamado pelo componente de paginação quando o usuário muda de página.
+  /**
+   * Atualiza a URL com os novos parâmetros de busca
+   * @param newOffset Novo offset para paginação
+   */
   onPageChange(newOffset: number): void {
+    this.offset = newOffset;
     this.router.navigate([], {
+      relativeTo: this.route,
       queryParams: {
         q: this.query,
-        offset: newOffset
+        offset: this.offset
       },
       queryParamsHandling: 'merge'
     });

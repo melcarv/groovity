@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { SpotifyService } from 'src/app/core/services/spotify.service';
 import { Router } from '@angular/router';
-import { catchError, finalize } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { catchError, finalize, takeUntil } from 'rxjs/operators';
+import { of, Subject } from 'rxjs';
+import { Artist } from 'src/app/core/models/spotify.models';
 
 /**
  * Componente da página inicial
@@ -14,11 +15,12 @@ import { of } from 'rxjs';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   searchControl = new FormControl('');
-  highlightArtist: any = null;
+  highlightArtist: Artist | null = null;
   loading = true;
   error: string | null = null;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private spotifyService: SpotifyService,
@@ -27,6 +29,11 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadFeaturedArtist();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   /**
@@ -42,15 +49,15 @@ export class HomeComponent implements OnInit {
       'Taylor Swift', 'Ariana Grande', 'Lady Gaga',
       'Rihanna', 'Justin Bieber', 'Beyoncé', 
       'Garbage', 'Placebo',
-      'Depeche Mode', 'Madonna',
-      ''
+      'Depeche Mode', 'Madonna'
     ];
 
     // Seleciona um artista aleatório da lista
     const randomArtist = popularArtists[Math.floor(Math.random() * popularArtists.length)];
 
-    // Busca os detalhes do artista selecionado. Se der erro, exibe uma mensagem. Se encontrou algum artista, salva o primeiro para exibir na tela.
+    // Busca os detalhes do artista selecionado
     this.spotifyService.searchArtists(randomArtist, 1, 0).pipe(
+      takeUntil(this.destroy$),
       catchError(err => {
         this.error = 'Erro ao carregar artista em destaque';
         return of({ artists: { items: [] } });
